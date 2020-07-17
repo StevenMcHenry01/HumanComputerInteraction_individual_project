@@ -20,6 +20,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import MuiPhoneNumber from 'material-ui-phone-number'
 
 import { useForm } from 'react-hook-form'
@@ -126,6 +128,10 @@ const Home: React.FC = () => {
       setDateError(false)
     }
   }, [selectedDate])
+
+  function onChange(value:any) {
+    console.log("Captcha value:", value);
+  }
 
   return (
     <PageWrapper>
@@ -289,6 +295,9 @@ const Home: React.FC = () => {
               />
             </div>
             <ErrorText>{errors.terms?.message}</ErrorText>
+          </FormElement>
+          <FormElement>
+            <ReCAPTCHA sitekey='6LdroLIZAAAAAGwzOlemXl1VveNgOyfIpUTsnEQE' onChange={onChange} />,
           </FormElement>
           <Button
             style={{ marginTop: '1rem', alignSelf: 'center' }}
