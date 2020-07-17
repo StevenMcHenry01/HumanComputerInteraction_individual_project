@@ -93,14 +93,19 @@ const Home: React.FC = () => {
   )
   const [phoneNumber, setPhoneNumber] = React.useState<String | undefined>()
   const [dateError, setDateError] = React.useState<Boolean>(false)
+  const [captchaError, setcaptchaError] = React.useState<Boolean>(true)
+  const [captchaChecked, setCaptchaChecked] = React.useState<Boolean>(false)
   const [phoneError, setPhoneError] = React.useState<Boolean>(false)
   const onSubmit = (data: IFormInputs) => {
-    console.log(phoneNumber)
     if (phoneNumber === undefined || phoneNumber === '+') {
       setPhoneError(true)
       return
     } else {
       setPhoneError(false)
+    }
+    if (captchaError) {
+      setCaptchaChecked(true)
+      return
     }
     console.log(data)
     console.log(selectedDate)
@@ -118,7 +123,6 @@ const Home: React.FC = () => {
 
   const handlePhoneChange = (value: any) => {
     setPhoneNumber(value)
-    console.log(phoneNumber)
   }
 
   React.useEffect(() => {
@@ -129,8 +133,8 @@ const Home: React.FC = () => {
     }
   }, [selectedDate])
 
-  function onChange(value:any) {
-    console.log("Captcha value:", value);
+  const handleCaptcha = (value: any) => {
+    setcaptchaError(false)
   }
 
   return (
@@ -297,7 +301,13 @@ const Home: React.FC = () => {
             <ErrorText>{errors.terms?.message}</ErrorText>
           </FormElement>
           <FormElement>
-            <ReCAPTCHA sitekey='6LfOoLIZAAAAAOvnGYE0A4-OGgfEGYEPQSADCwnH' onChange={onChange} />
+            <ReCAPTCHA
+              sitekey='6LfOoLIZAAAAAOvnGYE0A4-OGgfEGYEPQSADCwnH'
+              onChange={handleCaptcha}
+            />
+            {captchaChecked && captchaError && (
+              <ErrorText>captcha must pass</ErrorText>
+            )}
           </FormElement>
           <Button
             style={{ marginTop: '1rem', alignSelf: 'center' }}
