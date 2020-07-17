@@ -43,8 +43,8 @@ interface IFormInputs {
 //const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 const schema = yup.object().shape({
-  firstName: yup.string().required('first name is required'),
-  lastName: yup.string().required('last name is required'),
+  firstName: yup.string().required('first name is required').max(40),
+  lastName: yup.string().required('last name is required').max(40),
   feet: yup
     .number()
     .nullable(true)
@@ -104,7 +104,11 @@ const Home: React.FC = () => {
       if (captchaError) {
         setCaptchaChecked(true)
       }
-      if (phoneNumber === undefined || phoneNumber === '+') {
+      if (
+        phoneNumber === undefined ||
+        phoneNumber === '+' ||
+        parseInt(phoneNumber as string) < 0
+      ) {
         setPhoneError(true)
       } else {
         setPhoneError(false)
