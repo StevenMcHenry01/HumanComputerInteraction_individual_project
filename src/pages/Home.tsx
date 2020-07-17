@@ -94,7 +94,7 @@ const Home: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = React.useState<String | undefined>()
   const [dateError, setDateError] = React.useState<Boolean>(false)
   const [showResults, setShowResults] = React.useState<Boolean>(false)
-  const [captchaError, setcaptchaError] = React.useState<Boolean>(false)
+  const [captchaError, setcaptchaError] = React.useState<Boolean>(true)
   const [captchaChecked, setCaptchaChecked] = React.useState<Boolean>(false)
   const [captcha, setCaptcha] = React.useState<String | null>(null)
   const [data, setData] = React.useState<any>(null)
