@@ -3,7 +3,6 @@ import { lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Loading from './components/utils/Loading'
 import { CenteredDiv } from './styles/utils/CenteredDiv'
-import OtherPage from './pages/OtherPage'
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'))
@@ -21,9 +20,6 @@ export const Routes = () => (
       <Switch>
         <Route exact={true} path='/'>
           <Home />
-        </Route>
-        <Route exact={true} path='/otherPage'>
-          <OtherPage />
         </Route>
 
         {/* 404 route */}
