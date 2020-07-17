@@ -297,7 +297,7 @@ const Home: React.FC = () => {
             <ErrorText>{errors.terms?.message}</ErrorText>
           </FormElement>
           <FormElement>
-            <ReCAPTCHA sitekey='6LdroLIZAAAAAGwzOlemXl1VveNgOyfIpUTsnEQE' onChange={onChange} />,
+            <ReCAPTCHA sitekey='6LfOoLIZAAAAAOvnGYE0A4-OGgfEGYEPQSADCwnH' onChange={onChange} />
           </FormElement>
           <Button
             style={{ marginTop: '1rem', alignSelf: 'center' }}
