@@ -94,7 +94,7 @@ const Home: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = React.useState<String | undefined>()
   const [dateError, setDateError] = React.useState<Boolean>(false)
   const [showResults, setShowResults] = React.useState<Boolean>(false)
-  const [captchaError, setcaptchaError] = React.useState<Boolean>(true)
+  const [captchaError, setcaptchaError] = React.useState<Boolean>(false)
   const [captchaChecked, setCaptchaChecked] = React.useState<Boolean>(false)
   const [captcha, setCaptcha] = React.useState<String | null>(null)
   const [data, setData] = React.useState<any>(null)
@@ -113,7 +113,7 @@ const Home: React.FC = () => {
     }
     setData(data)
     setShowResults(true)
-    console.log(selectedDate)
+    return
   }
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date)
@@ -145,199 +145,237 @@ const Home: React.FC = () => {
 
   return (
     <PageWrapper>
-      <Typography variant='h4' style={{ textAlign: 'center' }}>
-        CSC 642 Summer 2020 Individual Assignment Steven McHenry
-      </Typography>
       {showResults === false ? (
-        <Card className={classes.root}>
-          <Typography style={{ textAlign: 'center' }} variant='h4'>
-            Data survey form
+        <>
+          <Typography variant='h4' style={{ textAlign: 'center' }}>
+            CSC 642 Summer 2020 Individual Assignment Steven McHenry
           </Typography>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            autoComplete='false'
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-            <FormElement>
-              <div style={{ display: 'flex' }}>
-                <div style={{ marginRight: '1rem' }}>
-                  <TextField
-                    name='firstName'
-                    id='firstName'
-                    label='first name *'
-                    type='text'
-                    inputRef={register}
-                    color={errors.firstName && 'secondary'}
-                  />
-                  <ErrorText>{errors.firstName?.message}</ErrorText>
+          <Card className={classes.root}>
+            <Typography style={{ textAlign: 'center' }} variant='h4'>
+              Data survey form
+            </Typography>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              autoComplete='false'
+              style={{ display: 'flex', flexDirection: 'column' }}
+            >
+              <FormElement>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ marginRight: '1rem' }}>
+                    <TextField
+                      name='firstName'
+                      id='firstName'
+                      label='first name *'
+                      type='text'
+                      inputRef={register}
+                      color={errors.firstName && 'secondary'}
+                    />
+                    <ErrorText>{errors.firstName?.message}</ErrorText>
+                  </div>
+                  <div>
+                    <TextField
+                      name='lastName'
+                      id='lastName'
+                      label='last name *'
+                      type='text'
+                      color={errors.lastName && 'secondary'}
+                      inputRef={register}
+                    />
+                    <ErrorText>{errors.lastName?.message}</ErrorText>
+                  </div>
                 </div>
-                <div>
-                  <TextField
-                    name='lastName'
-                    id='lastName'
-                    label='last name *'
-                    type='text'
-                    color={errors.lastName && 'secondary'}
+              </FormElement>
+              <FormElement>
+                <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                  Birth Date *
+                </Typography>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    className={classes.date}
+                    disableToolbar
+                    variant='inline'
+                    format='MM/dd/yyyy'
+                    margin='normal'
+                    id='date-picker-inline'
+                    value={selectedDate}
+                    onChange={handleDateChange}
                     inputRef={register}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                    {...(dateError ? { error: true } : {})}
+                    {...(dateError
+                      ? { helperText: 'birth date is required' }
+                      : {})}
                   />
-                  <ErrorText>{errors.lastName?.message}</ErrorText>
+                </MuiPickersUtilsProvider>
+              </FormElement>
+              <FormElement>
+                <InputLabel id='demo-simple-select-label'>
+                  Education level (optional)
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={education}
+                  onChange={handleEducationChange}
+                  className={classes.education}
+                >
+                  <MenuItem value={''}>None</MenuItem>
+                  <MenuItem value={'high school'}>high school</MenuItem>
+                  <MenuItem value={'college'}>college</MenuItem>
+                  <MenuItem value={'graduate studies'}>
+                    graduate studies
+                  </MenuItem>
+                  <MenuItem value={'Ph.D'}>Ph.D</MenuItem>
+                </Select>
+              </FormElement>
+              <FormElement>
+                <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                  Height (optional)
+                </Typography>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ marginRight: '1rem' }}>
+                    <Input
+                      name='feet'
+                      id='feet'
+                      inputRef={register}
+                      endAdornment={
+                        <InputAdornment position='end'>ft</InputAdornment>
+                      }
+                      color={errors.feet && 'secondary'}
+                      style={{ maxWidth: '100px' }}
+                    />
+                    <ErrorText>{errors.feet?.message}</ErrorText>
+                  </div>
+                  <div>
+                    <Input
+                      name='inches'
+                      id='inches'
+                      inputRef={register}
+                      endAdornment={
+                        <InputAdornment position='end'>in</InputAdornment>
+                      }
+                      color={errors.inches && 'secondary'}
+                      style={{ maxWidth: '100px' }}
+                    />
+                    <ErrorText>{errors.inches?.message}</ErrorText>
+                  </div>
                 </div>
-              </div>
-            </FormElement>
-            <FormElement>
-              <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-                Birth Date *
-              </Typography>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  className={classes.date}
-                  disableToolbar
-                  variant='inline'
-                  format='MM/dd/yyyy'
-                  margin='normal'
-                  id='date-picker-inline'
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  inputRef={register}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                  {...(dateError ? { error: true } : {})}
-                  {...(dateError
-                    ? { helperText: 'birth date is required' }
+              </FormElement>
+              <FormElement>
+                <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                  Phone Number *
+                </Typography>
+                <MuiPhoneNumber
+                  defaultCountry={'us'}
+                  disableAreaCodes
+                  value={phoneNumber}
+                  onChange={handlePhoneChange}
+                  {...(phoneError ? { error: true } : {})}
+                  {...(phoneError
+                    ? { helperText: 'phone number is required' }
                     : {})}
                 />
-              </MuiPickersUtilsProvider>
-            </FormElement>
-            <FormElement>
-              <InputLabel id='demo-simple-select-label'>
-                Education level (optional)
-              </InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                value={education}
-                onChange={handleEducationChange}
-                className={classes.education}
-              >
-                <MenuItem value={''}>None</MenuItem>
-                <MenuItem value={'high school'}>high school</MenuItem>
-                <MenuItem value={'college'}>college</MenuItem>
-                <MenuItem value={'graduate studies'}>graduate studies</MenuItem>
-                <MenuItem value={'Ph.D'}>Ph.D</MenuItem>
-              </Select>
-            </FormElement>
-            <FormElement>
-              <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-                Height (optional)
-              </Typography>
-              <div style={{ display: 'flex' }}>
-                <div style={{ marginRight: '1rem' }}>
-                  <Input
-                    name='feet'
-                    id='feet'
-                    inputRef={register}
-                    endAdornment={
-                      <InputAdornment position='end'>ft</InputAdornment>
-                    }
-                    color={errors.feet && 'secondary'}
-                    style={{ maxWidth: '100px' }}
-                  />
-                  <ErrorText>{errors.feet?.message}</ErrorText>
-                </div>
-                <div>
-                  <Input
-                    name='inches'
-                    id='inches'
-                    inputRef={register}
-                    endAdornment={
-                      <InputAdornment position='end'>in</InputAdornment>
-                    }
-                    color={errors.inches && 'secondary'}
-                    style={{ maxWidth: '100px' }}
-                  />
-                  <ErrorText>{errors.inches?.message}</ErrorText>
-                </div>
-              </div>
-            </FormElement>
-            <FormElement>
-              <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-                Phone Number *
-              </Typography>
-              <MuiPhoneNumber
-                defaultCountry={'us'}
-                disableAreaCodes
-                value={phoneNumber}
-                onChange={handlePhoneChange}
-                {...(phoneError ? { error: true } : {})}
-                {...(phoneError
-                  ? { helperText: 'phone number is required' }
-                  : {})}
-              />
-            </FormElement>
-            <FormElement>
-              <TextField
-                name='email1'
-                id='email1'
-                label='email *'
-                type='text'
-                inputRef={register}
-                color={errors.email1 && 'secondary'}
-              />
-              <ErrorText>{errors.email1?.message}</ErrorText>
-              <TextField
-                name='email2'
-                id='email2'
-                label='validate email *'
-                type='text'
-                inputRef={register}
-                color={errors.email2 && 'secondary'}
-              />
-              <ErrorText>{errors.email2?.message}</ErrorText>
-            </FormElement>
-            <FormElement>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-                  “I Agree to terms” check *
-                </Typography>
-                <Checkbox
-                  name='terms'
-                  id='terms'
+              </FormElement>
+              <FormElement>
+                <TextField
+                  name='email1'
+                  id='email1'
+                  label='email *'
+                  type='text'
                   inputRef={register}
-                  color='primary'
+                  color={errors.email1 && 'secondary'}
                 />
-              </div>
-              <ErrorText>{errors.terms?.message}</ErrorText>
-            </FormElement>
-            <FormElement>
-              <ReCAPTCHA
-                sitekey='6LfOoLIZAAAAAOvnGYE0A4-OGgfEGYEPQSADCwnH'
-                onChange={handleCaptcha}
-              />
-              {captchaChecked && captchaError && (
-                <ErrorText>captcha must pass</ErrorText>
-              )}
-            </FormElement>
-            <Button
-              style={{ marginTop: '1rem', alignSelf: 'center' }}
-              variant='contained'
-              color='primary'
-              type='submit'
-            >
-              Submit
-            </Button>
-          </form>
-        </Card>
+                <ErrorText>{errors.email1?.message}</ErrorText>
+                <TextField
+                  name='email2'
+                  id='email2'
+                  label='validate email *'
+                  type='text'
+                  inputRef={register}
+                  color={errors.email2 && 'secondary'}
+                />
+                <ErrorText>{errors.email2?.message}</ErrorText>
+              </FormElement>
+              <FormElement>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                    “I Agree to terms” check *
+                  </Typography>
+                  <Checkbox
+                    name='terms'
+                    id='terms'
+                    inputRef={register}
+                    color='primary'
+                  />
+                </div>
+                <ErrorText>{errors.terms?.message}</ErrorText>
+              </FormElement>
+              <FormElement>
+                <ReCAPTCHA
+                  sitekey='6LfOoLIZAAAAAOvnGYE0A4-OGgfEGYEPQSADCwnH'
+                  onChange={handleCaptcha}
+                />
+                {captchaChecked && captchaError && (
+                  <ErrorText>captcha must pass</ErrorText>
+                )}
+              </FormElement>
+              <Button
+                style={{ marginTop: '1rem', alignSelf: 'center' }}
+                variant='contained'
+                color='primary'
+                type='submit'
+              >
+                Submit
+              </Button>
+            </form>
+          </Card>
+        </>
       ) : (
-        <Card>
-          <Typography style={{ textAlign: 'center' }} variant='h4'>
-            Results Verification Page Steven McHenry
+        <>
+          <Typography variant='h4' style={{ textAlign: 'center' }}>
+            Results Verification Page
           </Typography>
-          <Typography>First Name: {data.firstName}</Typography>
-          <Typography>{captcha}</Typography>
-          <Typography>{selectedDate}</Typography>
-          <Typography>{phoneNumber}</Typography>
-        </Card>
+          <Card
+            style={{ padding: '3rem', textAlign: 'center', marginTop: '2rem' }}
+          >
+            <ResultsText style={{ marginTop: '1rem' }}>
+              <strong>First Name:</strong> {data?.firstName}
+            </ResultsText>
+            <ResultsText>
+              <strong>Last Name:</strong> {data?.lastName}
+            </ResultsText>
+            <ResultsText>
+              <strong>Birth Date:</strong> {selectedDate?.toDateString()}
+            </ResultsText>
+            <ResultsText>
+              <strong>Education Level:</strong> {education}
+            </ResultsText>
+            <ResultsText>
+              <strong>Height:</strong> {data?.feet}ft {data?.inches}inches
+            </ResultsText>
+            <ResultsText>
+              <strong>Phone Number:</strong> {phoneNumber}
+            </ResultsText>
+            <ResultsText>
+              <strong>Email:</strong> {data?.email1}
+            </ResultsText>
+            <ResultsText>
+              <strong>Terms:</strong> {data?.terms && 'accepted'}
+            </ResultsText>
+            <ResultsText>
+              <strong>Captcha:</strong> {captcha}
+            </ResultsText>
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={() => setShowResults(false)}
+            >
+              Back to form
+            </Button>
+          </Card>
+        </>
       )}
     </PageWrapper>
   )
@@ -357,4 +395,8 @@ const FormElement = styled.div`
 `
 const ErrorText = styled.p`
   color: red;
+`
+
+const ResultsText = styled(Typography)`
+  margin-bottom: 1rem;
 `
